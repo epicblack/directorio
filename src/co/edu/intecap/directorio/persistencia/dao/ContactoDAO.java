@@ -10,8 +10,11 @@ import co.edu.intecap.directorio.persistencia.vo.Contacto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -111,6 +114,21 @@ public class ContactoDAO {
             ConexionBD.desconectar(cnn);
         }
         return miContacto;
+    }
+    
+    public void eliminar(Contacto entidad){
+        
+        try {
+            String sql = "DELETE FROM contacto WHERE id_contacto=?";
+            PreparedStatement sentencia = cnn.prepareStatement(sql);
+            sentencia.setLong(1, entidad.getIdContacto());
+            sentencia.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar");
+            e.printStackTrace(System.err);
+        } finally {
+            ConexionBD.desconectar(cnn);
+        }
     }
 
 }
